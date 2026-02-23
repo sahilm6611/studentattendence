@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Attendance System</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 0;
+            background: #f4f4f4;
+        }
+
+        nav {
+            background: #2c3e50;
+            padding: 15px;
+            text-align: center;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+            margin-top: 30px;
+        }
+
+        .box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px gray;
+            margin-bottom: 30px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+        }
+
+        button {
+            background: #2c3e50;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 0 5px gray;
+        }
+
+        .present {
+            color: green;
+            font-weight: bold;
+        }
+
+        .absent {
+            color: red;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #2c3e50;
+            color: white;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<nav>Student Attendance System</nav>
+
+<div class="container">
+
+    <!-- Add Student -->
+    <div class="box">
+        <h2>Add Student</h2>
+
+        <input type="text" id="name" placeholder="Enter Student Name">
+        <input type="text" id="roll" placeholder="Enter Roll Number">
+        <input type="text" id="class" placeholder="Enter Class">
+
+        <select id="status">
+            <option value="Present">Present</option>
+            <option value="Absent">Absent</option>
+        </select>
+
+        <button onclick="addStudent()">Add Attendance</button>
+    </div>
+
+    <!-- Search Student -->
+    <div class="box">
+        <h2>Search Student</h2>
+
+        <input type="text" id="searchText" placeholder="Search by Name or Roll Number">
+
+        <button onclick="searchStudent()">Search</button>
+    </div>
+
+    <!-- Display Records -->
+    <div>
+        <h2>Attendance Records</h2>
+        <div id="recordList"></div>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 Student Attendance Project
+</footer>
+
+<script>
+
+    var students = [];
+
+    function addStudent() {
+
+        var name = document.getElementById("name").value;
+        var roll = document.getElementById("roll").value;
+        var studentClass = document.getElementById("class").value;
+        var status = document.getElementById("status").value;
+
+        if(name == "" || roll == "" || studentClass == "") {
+            alert("Please fill all fields");
+            return;
+        }
+
+        var student = {
+            name: name,
+            roll: roll,
+            class: studentClass,
+            status: status
+        };
+
+        students.push(student);
+
+        alert("Attendance Added Successfully!");
+
+        document.getElementById("name").value = "";
+        document.getElementById("roll").value = "";
+        document.getElementById("class").value = "";
+    }
+
+    function searchStudent() {
+
+        var searchText = document.getElementById("searchText").value.toLowerCase();
+        var output = "<h3>Attendance Result</h3>";
+        var found = false;
+
+        for(var i = 0; i < students.length; i++) {
+
+            if(students[i].name.toLowerCase().includes(searchText) ||
+               students[i].roll.toLowerCase().includes(searchText)) {
+
+                found = true;
+
+                var statusClass = students[i].status == "Present" ? "present" : "absent";
+
+                output += `
+                    <div class="card">
+                        <h3>${students[i].name}</h3>
+                        <p><b>Roll No:</b> ${students[i].roll}</p>
+                        <p><b>Class:</b> ${students[i].class}</p>
+                        <p class="${statusClass}">Status: ${students[i].status}</p>
+                    </div>
+                `;
+            }
+        }
+
+        if(!found) {
+            output += "<p style='color:red;'>No Student Found.</p>";
+        }
+
+        document.getElementById("recordList").innerHTML = output;
+    }
+
+</script>
+
+</body>
+</html>
